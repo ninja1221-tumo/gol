@@ -15,7 +15,7 @@ for (let y = 0; y < matrix.length; y++) {
     }
 }
 
-let fr = 7;
+let fr = 1;
 let h = 25;
 
 let grasArr = [];
@@ -30,7 +30,7 @@ function getRandommatrix(hoehe, breite) {
     for (let y = 0; y < breite; y++) {
         square[y] = [];  // or square.push([])
         for (let x = 0; x < hoehe; x++) {
-            square[y][x] = Math.floor(random(0, 2))
+            square[y][x] = Math.floor(random(0, 5))
         }
     }
     return square
