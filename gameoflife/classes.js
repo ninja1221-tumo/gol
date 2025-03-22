@@ -1,3 +1,147 @@
+class LivingCreature {
+    static staticList = [];
+    constructor(x, y, color)
+    {
+        this.x = x;
+        this.y = y;
+        this.colorValue = color;
+        this.neighbors = [
+            [this.x - 1, this.y - 1],
+            [this.x, this.y - 1],
+            [this.x + 1, this.y - 1],
+            [this.x - 1, this.y],
+            [this.x + 1, this.y],
+            [this.x - 1, this.y + 1],
+            [this.x, this.y + 1],
+            [this.x + 1, this.y + 1]
+        ];
+    }
+}
+
+class Animal extends LivingCreature {
+    constructor(x, y, color, requiredEnergy) {
+        super(x, y, color);
+        this.energyRequired = requiredEnergy;
+        this.eatCounter = 0;
+        this.notEatenCounter = 0;
+    };
+    findFields(want) {
+        this.updateneighbors();
+        // Leere Nachbarfelder finden
+        let found = [];
+        for (let i = 0; i < this.neighbors.length; i++) {
+            const pos = this.neighbors[i]; // [x, y]
+            let posX = pos[0];
+            let posY = pos[1];
+            // Matrix ueberpruefen
+            if (posY >= 0 && posX >= 0 && posY < matrix.length && posX < matrix[0].length) {
+                if (matrix[posY][posX] == want) {
+                    found.push(pos);
+                }
+            }
+        }
+        return found
+    }
+    updateneighbors() {
+        this.neighbors = [
+            [this.x - 1, this.y - 1],
+            [this.x, this.y - 1],
+            [this.x + 1, this.y - 1],
+            [this.x - 1, this.y],
+            [this.x + 1, this.y],
+            [this.x - 1, this.y + 1],
+            [this.x, this.y + 1],
+            [this.x + 1, this.y + 1]
+        ];
+    }
+    multiply(newCreatureClass) {
+        if (this.eatCounter >= this.energyRequired) {
+            let spawn = this.findFields(0);
+            if (spawn.length > 0) {
+                let newwPos = random(spawn);
+                let newwY = newwPos[1];
+                let newwX = newwPos[0];
+                newCreatureClass.staticList.push(new newCreatureClass(newwX, newwY));
+                matrix[newwY][newwX] == this.colorValue;
+                this.eatCounter = 0;
+            }
+        }
+    }
+    /**
+     * 
+     * @param {object} creatureClass This Object's class reference
+     */
+    die(creatureClass) {
+        matrix[this.y][this.x] = 0;
+        for (let i = 0; i < creatureClass.staticList.length; i++) {
+            if (this.y == creatureClass.staticList[i].y && this.x == creatureClass.staticList[i].x) {
+                creatureClass.staticList.splice(i, 1);
+                break;
+            }
+        }
+    }
+    move() {
+        let spaces = this.findFields(0);
+        if (spaces.length > 0) {
+            let pos = random(spaces);
+            let posY = pos[1];
+            let posX = pos[0];
+            matrix[posY][posX] = this.colorValue;
+            matrix[this.y][this.x] = 0;
+            this.y = posY;
+            this.x = posX;
+        }
+    }
+    /**
+     * 
+     * @param {Array<number>} eatColor Array with numbers color to look for
+     * @param {Array} listArray Array with Class References
+     */
+    eat(eatColors, listArray) {
+        let fields = [];
+        for(color of eatColors) {
+            fields.push(...this.findFields(color));
+        };
+        if (fields.length > 0) {
+            let eatField = random(fields);
+            let posY = eatField[1];
+            let posX = eatField[0];
+            matrix[posY][posX] = this.colorValue;
+            matrix[this.y][this.x] = 0;
+            this.y = posY;
+            this.x = posX;
+
+            let deleted = false;
+            // iterate throguh the classes
+            for(let j = 0; j < listArray.length; j++){
+                // Array elements must be class references with staticList
+                for (let i = 0; i < listArray[j].staticList.length; i++) {
+                    if (this.y == listArray[j].staticList[i].y && this.x == listArray[j].staticList[i].x) {
+                        listArray[j].staticList.splice(i, 1);
+                        deleted = true;
+                        break;
+                    }
+                }
+                if(deleted) break;
+            }
+            this.eatCounter++;
+            this.noteatenCounter = 0;
+
+            this.multiply();
+
+        } else {
+            this.eatCounter = 0;
+            this.noteatenCounter++;
+            if (this.noteatenCounter >= 5) {
+                this.die();
+            } else {
+                this.move();
+            }
+
+        }
+    }
+}
+
 class Grass {
     constructor(x, y) {
         // Farbe - gruen
@@ -56,313 +200,40 @@ class Grass {
 }
 
 
-class Grasseater {
+class Grasseater extends Animal {
     constructor(x, y) {
-        // Farbe - gruen
-        this.colorValue = 2;
-        // Position 
-        this.y = y;
-        this.x = x;
-        // Nachbarn
-        this.neighbors = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
-        // Rundenzaehler
-        this.eatCounter = 0;
-        this.noteatenCounter = 0;
-    }
-    findFields(want) {
-        this.updateneighbors();
-        // Leere Nachbarfelder finden
-        let found = [];
-        for (let i = 0; i < this.neighbors.length; i++) {
-            const pos = this.neighbors[i]; // [x, y]
-            let posX = pos[0];
-            let posY = pos[1];
-            // Matrix ueberpruefen
-            if (posY >= 0 && posX >= 0 && posY < matrix.length && posX < matrix[0].length) {
-                if (matrix[posY][posX] == want) {
-                    found.push(pos);
-                }
-            }
-        }
-        return found
-    }
-    updateneighbors() {
-        this.neighbors = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
+        super(x, y, 2, 5);
     }
     multiply() {
-        if (this.eatCounter >= 5) {
-            let spawn = this.findFields(0);
-            if (spawn.length > 0) {
-                let newwPos = random(spawn);
-                let newwY = newwPos[1];
-                let newwX = newwPos[0];
-                eatgrasArr.push(new Grasseater(newwX, newwY));
-                matrix[newwY][newwX] == 2;
-                this.eatCounter = 0;
-            }
-        }
+        super.multiply(Grasseater);
     }
     die() {
-        matrix[this.y][this.x] = 0;
-        for (let i = 0; i < eatgrasArr.length; i++) {
-            if (this.y == eatgrasArr[i].y && this.x == eatgrasArr[i].x) {
-
-                eatgrasArr.splice(i, 1);
-                break;
-            }
-        }
-    }
-    move() {
-        let spaces = this.findFields(0);
-        if (spaces.length > 0) {
-            let pos = random(spaces);
-            let posY = pos[1];
-            let posX = pos[0];
-            matrix[posY][posX] = 2;
-            matrix[this.y][this.x] = 0;
-            this.y = posY;
-            this.x = posX;
-        }
+        super.die(Grasseater);
     }
     eat() {
-        let fields = this.findFields(1);
-        if (fields.length > 0) {
-            let grassfield = random(fields);
-            let posY = grassfield[1];
-            let posX = grassfield[0];
-            matrix[posY][posX] = 2;
-            matrix[this.y][this.x] = 0;
-            this.y = posY;
-            this.x = posX;
-            for (let i = 0; i < grasArr.length; i++) {
-                if (this.y == grasArr[i].y && this.x == grasArr[i].x) {
-                    grasArr.splice(i, 1);
-                    break;
-                }
-            }
-            this.eatCounter++;
-            this.noteatenCounter = 0;
-
-            this.multiply();
-
-        } else {
-            this.eatCounter = 0;
-            this.noteatenCounter++;
-            if (this.noteatenCounter >= 5) {
-                this.die();
-            } else {
-                this.move();
-            }
-
-        }
+        super.eat([1],[Grass]);
     }
 
 }
-class Flesheater {
+class Flesheater extends Animal{
     constructor(x, y) {
-        // Farbe - rot
-        this.colorValue = 3;
-        // Position 
-        this.y = y;
-        this.x = x;
-        // Nachbarn
-        this.neighbors = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
-        // Rundenzaehler
-        this.eatCounter = 0;
-        this.noteatenCounter = 0;
-    }
-    findFields(want) {
-        this.updateneighbors();
-        // Leere Nachbarfelder finden
-        let found = [];
-        for (let i = 0; i < this.neighbors.length; i++) {
-            const pos = this.neighbors[i]; // [x, y]
-            let posX = pos[0];
-            let posY = pos[1];
-            // Matrix ueberpruefen
-            if (posY >= 0 && posX >= 0 && posY < matrix.length && posX < matrix[0].length) {
-                if (matrix[posY][posX] == want) {
-                    found.push(pos);
-                }
-            }
-        }
-        return found
-    }
-    updateneighbors() {
-        this.neighbors = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
+        super(x, y, 3, 8);
     }
     multiply() {
-        if (this.eatCounter >= 8) {
-            let spawn = this.findFields(0);
-            if (spawn.length > 0) {
-                let newwPos = random(spawn);
-                let newwY = newwPos[1];
-                let newwX = newwPos[0];
-                predatorArr.push(new Flesheater(newwX, newwY));
-                matrix[newwY][newwX] == 3;
-                this.eatCounter = 0;
-            }
-        }
+        super.multiply(Flesheater);
     }
     die() {
-        matrix[this.y][this.x] = 0;
-        for (let i = 0; i < predatorArr.length; i++) {
-            if (this.y == predatorArr[i].y && this.x == predatorArr[i].x) {
-
-                predatorArr.splice(i, 1);
-                break;
-            }
-        }
-    }
-    move() {
-        let spaces = this.findFields(0);
-        if (spaces.length > 0) {
-            let pos = random(spaces);
-            let posY = pos[1];
-            let posX = pos[0];
-            matrix[posY][posX] = 3;
-            matrix[this.y][this.x] = 0;
-            this.y = posY;
-            this.x = posX;
-        }
+        super.die(Flesheater);
     }
     eat() {
-        let fields = this.findFields(2);
-        if (fields.length > 0) {
-            let fleshfield = random(fields);
-            let posY = fleshfield[1];
-            let posX = fleshfield[0];
-            matrix[posY][posX] = 3;
-            matrix[this.y][this.x] = 0;
-            this.y = posY;
-            this.x = posX;
-            for (let i = 0; i < eatgrasArr.length; i++) {
-                if (this.y == eatgrasArr[i].y && this.x == eatgrasArr[i].x) {
-                    eatgrasArr.splice(i, 1);
-                    break;
-                }
-            }
-            this.eatCounter++;
-            this.noteatenCounter = 0;
-
-            this.multiply();
-
-        } else {
-            this.eatCounter = 0;
-            this.noteatenCounter++;
-            if (this.noteatenCounter >= 5) {
-                this.die();
-            } else {
-                this.move();
-            }
-
-        }
+        super.eat([2], [Grasseater]);
     }
 
 }
 
-class Horse {
+class Horse extends Animal{
     constructor(x, y) {
-        // Farbe - rot
-        this.colorValue = 4;
-        // Position 
-        this.y = y;
-        this.x = x;
-        // Nachbarn
-        this.neighbors = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
-        this.movements = [
-            [this.x - 2, this.y - 1],
-            [this.x + 2, this.y - 1],
-            [this.x - 1, this.y - 2],
-            [this.x + 1, this.y - 2],
-            [this.x - 2, this.y + 1],
-            [this.x + 2, this.y + 1],
-            [this.x + 1, this.y + 2],
-            [this.x - 1, this.y + 2]
-        ]
-        // Rundenzaehler
-        this.eatCounter = 0;
-        this.noteatenCounter = 0;
-        this.notmovenCounter = 0;
-    }
-    findFields(want) {
-        this.updateneighbors();
-        // Leere Nachbarfelder finden
-        let found = [];
-        for (let i = 0; i < this.neighbors.length; i++) {
-            const pos = this.neighbors[i]; // [x, y]
-            let posX = pos[0];
-            let posY = pos[1];
-            // Matrix ueberpruefen
-            if (posY >= 0 && posX >= 0 && posY < matrix.length && posX < matrix[0].length) {
-                if (matrix[posY][posX] == want) {
-                    found.push(pos);
-                }
-            }
-        }
-        return found
-    }
-    findMovementFields(want) {
-        this.updateneighbors();
-        // Leere Nachbarfelder finden
-        let found = [];
-        for (let i = 0; i < this.movements.length; i++) {
-            const pos = this.movements[i]; // [x, y]
-            let posX = pos[0];
-            let posY = pos[1];
-            // Matrix ueberpruefen
-            if (posY >= 0 && posX >= 0 && posY < matrix.length && posX < matrix[0].length) {
-                if (matrix[posY][posX] == want) {
-                    found.push(pos);
-                }
-            }
-        }
-        return found
+        super(x, y, 4, 10);
     }
     updateneighbors() {
         this.neighbors = [
@@ -386,69 +257,14 @@ class Horse {
             [this.x - 1, this.y + 2]
         ]
     }
-    move() {
-        let spaces = this.findMovementFields(0);
-        if (spaces.length > 0) {
-            let pos = random(spaces);
-            let posY = pos[1];
-            let posX = pos[0];
-            matrix[posY][posX] = 4;
-            matrix[this.y][this.x] = 0;
-            this.y = posY;
-            this.x = posX;
-        }
-    }
     multiply() {
-        let spawn = this.findFields(0);
-        if (this.eatCounter == 10 && spawn.length > 0) {
-            for (let i = 0; i < spawn.length; i++) {
-                const place = random(spawn);
-                let newhY = place[1];
-                let newhX = place[0];
-                matrix[newhY][newhX] = 4;
-                let h = new Horse(newhX, newhY);
-                horseArr.push(h);
-            }
-        }
+        super.multiply(Horse);
     }
     die() {
-        for (let i = 0; i < horseArr.length; i++) {
-            if (this.y == horseArr[i].y && this.x == horseArr[i].x) {
-                horseArr.splice(i, 1);
-                matrix[this.y][this.x] = 0;
-            }
-        }
+        super.die(Horse);
     }
     eat() {
-        let fields = this.findMovementFields(3);
-        if (fields.length > 0) {
-            let flesheaterfield = random(fields);
-            let posY = flesheaterfield[1];
-            let posX = flesheaterfield[0];
-            matrix[posY][posX] = 4;
-            matrix[this.y][this.x] = 0;
-            this.y = posY;
-            this.x = posX;
-            for (let i = 0; i < predatorArr.length; i++) {
-                if (this.y == predatorArr[i].y && this.x == predatorArr[i].x) {
-                    predatorArr.splice(i, 1);
-                    break;
-                }
-            }
-            this.eatCounter++;
-            this.noteatenCounter = 0;
-
-            this.multiply();
-
-        } else
-            this.noteatenCounter++;
-        this.eatCounter = 0;
-        if (this.noteatenCounter >= 8) {
-            this.die();
-        } else {
-            this.move();
-        }
-
+        super.eat([3], [Flesheater]);
     }
 
 }
