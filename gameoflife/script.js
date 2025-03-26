@@ -18,11 +18,11 @@ for (let y = 0; y < matrix.length; y++) {
 let fr = 1;
 let h = 25;
 
-let grasArr = [];
-let eatgrasArr = [];
-let predatorArr = [];
-let horseArr = [];
-let stoneArr = [];
+Grass.staticList = [];
+Grasseater.staticList = [];
+Flesheater.staticList = [];
+Horse.staticList = [];
+TrapStone.staticList = [];
 
 
 function getRandommatrix(hoehe, breite) {
@@ -68,21 +68,21 @@ function setup() {
         for (let x = 0; x < matrix[y].length; x++) {
             if (matrix[y][x] == 1) {
                 let g = new Grass(x, y);
-                grasArr.push(g);
+                Grass.staticList.push(g);
             } else if (matrix[y][x] == 2) {
                 let e = new Grasseater(x, y);
-                eatgrasArr.push(e);
+                Grasseater.staticList.push(e);
             } else if (matrix[y][x] == 3) {
                 let f = new Flesheater(x, y);
-                predatorArr.push(f);
+                Flesheater.staticList.push(f);
             } else if (matrix[y][x] == 4) {
                 let h = new Horse(x, y);
-                horseArr.push(h);
+                Horse.staticList.push(h);
             } else if (matrix[y][x] == 5) {
-                let id = stoneArr.length;
+                let id = TrapStone.staticList.length;
                 let di = Math.floor(random(0, 5));
                 let s = new TrapStone(x, y, id, di);
-                stoneArr.push(s);
+                TrapStone.staticList.push(s);
             }
         }
     }
@@ -93,24 +93,23 @@ function setup() {
 function draw() {
 
 
-    for (let i = 0; i < grasArr.length; i++) {
-        grasArr[i].multiply()
+    for (let i = 0; i < Grass.staticList.length; i++) {
+        Grass.staticList[i].multiply()
     }
-    for (let i = 0; i < eatgrasArr.length; i++) {
-        eatgrasArr[i].eat();
+    for (let i = 0; i < Grasseater.staticList.length; i++) {
+        Grasseater.staticList[i].eat();
     }
-    for (let i = 0; i < predatorArr.length; i++) {
-        predatorArr[i].eat();
+    for (let i = 0; i < Flesheater.staticList.length; i++) {
+        Flesheater.staticList[i].eat();
     }
-    for (let i = 0; i < horseArr.length; i++) {
-        horseArr[i].eat();
+    for (let i = 0; i < Horse.staticList.length; i++) {
+        Horse.staticList[i].eat();
     }
-    for (let i = 0; i < stoneArr.length; i++) {
-        stoneArr[i].roll();
-        stoneArr[i].deleteOtherCreatures();
+    for (let i = 0; i < TrapStone.staticList.length; i++) {
+        TrapStone.staticList[i].roll();
     }
 
-    console.log(grasArr.length)
+    console.log(Grass.staticList.length)
 
     for (let y = 0; y < matrix.length; y++) {
         for (let x = 0; x < matrix[y].length; x++) {
