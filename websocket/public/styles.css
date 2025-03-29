@@ -1,0 +1,91 @@
+/* public/styles.css */
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Nutzt die volle Höhe des Browserfensters */
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+#chat-container {
+    flex-grow: 1; /* Nimmt den verfügbaren Platz ein */
+    overflow-y: auto; /* Scrollbalken, wenn Inhalt zu lang */
+    padding: 15px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ccc;
+    display: flex; /* Wichtig für Scroll-Verhalten */
+    flex-direction: column; /* Nachrichten untereinander */
+}
+
+#chat-container div {
+    /* Style für einzelne Nachrichten-Bubbles */
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 15px;
+    max-width: 75%;
+    line-height: 1.4;
+    word-wrap: break-word; /* Lange Wörter umbrechen */
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1); /* Leichter Schatten */
+}
+
+.user-message {
+    background-color: #dcf8c6; /* Helles Grün */
+    margin-left: auto; /* Nach rechts ausrichten */
+    align-self: flex-end; /* Stellt sicher, dass es rechts bleibt */
+    border-bottom-right-radius: 5px; /* Kleine Anpassung für Bubble-Optik */
+}
+
+.ai-message {
+    background-color: #e5e5ea; /* Helles Grau */
+    margin-right: auto; /* Nach links ausrichten */
+    align-self: flex-start; /* Stellt sicher, dass es links bleibt */
+    border-bottom-left-radius: 5px; /* Kleine Anpassung für Bubble-Optik */
+}
+
+.system-message {
+    font-style: italic;
+    color: #555;
+    text-align: center;
+    background-color: transparent;
+    align-self: center; /* Zentriert im Chat */
+    max-width: 100%;
+    font-size: 0.9em;
+    box-shadow: none;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+#input-area {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #ccc;
+    background-color: #f8f8f8;
+    flex-shrink: 0; /* Verhindert, dass der Bereich schrumpft */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+}
+
+#messageInput {
+    flex-grow: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+    font-size: 1em;
+    resize: none;
+}
+
+#sendButton {
+    padding: 12px 25px;
+    font-size: 1em;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff; /* Blau */
+    color: white;
+    border-radius: 20px;
+    transition: background-color 0.2s ease;
+}
+
+#sendButton:hover {
+    background-color: #0056b3; /* Dunkleres Blau beim Hovern */
+}

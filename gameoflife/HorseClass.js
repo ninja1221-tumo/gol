@@ -22,7 +22,7 @@ class Horse extends Animal{
         super.die(Horse);
     }
     eat() {
-        super.eat([3], [Flesheater]);
+        super.eat([2, 1], [Grasseater, Grass]);
     }
     move() {
         this.updateneighbors();

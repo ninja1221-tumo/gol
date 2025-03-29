@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Bot</title>
+    <!-- Verlinkt die CSS-Datei für das Aussehen -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Lädt die Socket.IO Client-Bibliothek (wird vom Server bereitgestellt) -->
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <!-- Hier erscheinen die Chat-Nachrichten -->
+    <div id="chat-container">
+        <div class="system-message">Warte auf Verbindung zum Server...</div>
+    </div>
+
+    <!-- Bereich für die Eingabe -->
+    <div id="input-area">
+        <input type="text" id="messageInput" placeholder="Frag den Bot etwas...">
+        <button id="sendButton">Senden</button>
+    </div>
+
+    <!-- Lädt unsere eigene JavaScript-Datei für den Client -->
+    <script src="client.js"></script>
+</body>
+
+</html>
