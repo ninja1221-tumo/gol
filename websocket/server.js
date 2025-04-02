@@ -21,7 +21,7 @@ if (!GEMINI_API_KEY) {
 const genAI = new GoogleGenAI({apiKey: GEMINI_API_KEY});
 
 // HIER EINFÜGEN: Definiere die Persönlichkeit des Bots
-const SYSTEM_INSTRUCTION = "Antworte kurzz und knapp!"; // Ändere das nach Belieben!
+const SYSTEM_INSTRUCTION = "Antworte locker!"; // Ändere das nach Belieben!
 
 // füge beim erstellen des chats die neue systeminstruction ein.
 /** wäre eigentlich const im originallen */
