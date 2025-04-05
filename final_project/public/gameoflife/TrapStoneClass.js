@@ -1,4 +1,8 @@
 import { matrix } from "../matrix.js";
+import Grass from "./GrassClass.js";
+import Flesheater from "./FlesheaterClass.js";
+import Grasseater from "./GrasseaterClass.js";
+import Horse from "./HorseClass.js";
 
 export default class TrapStone {
     static staticList = [];

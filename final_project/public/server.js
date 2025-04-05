@@ -3,12 +3,12 @@
 
 import { draw, framerate, setup, transformMatrix } from "./utilities.js";
 import { matrix } from "./matrix.js";
-import * as express from "express";
+import express from "express";
 const app = express();
 import * as http from "http";
 const server = http.Server(app);
 import * as socketio from "socket.io";
-const io = socketio.Server(server);
+const io = new socketio.Server(server);
 
 // wir speichern das Ergebnis von der setInterval Funktion in einer Variable,
 // damit wir es später stoppen können
@@ -17,11 +17,11 @@ let intetval;
 // wir sagen Express, dass die Dateien im Ordner client statisch sind
 // das bedeutet, dass sie direkt an der Browser geschickt werden können
 // Der Code für den Client muss also im Ordner client liegen
-app.use(express.static('client'));
+app.use(express.static('./client'));
 
 // wenn ein Benutzer die Seite öffnet, wird er auf die index.html Datei weitergeleitet
 app.get('/', (req, res) => {
-    res.redirect('/index.html');
+    res.redirect('index.html');
 });
 
 // wir starten den Server auf dem Port 3000

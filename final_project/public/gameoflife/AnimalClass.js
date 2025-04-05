@@ -1,5 +1,6 @@
 import LivingCreature from "./LivingCreatureClass.js";
 import { matrix } from "../matrix.js";
+import { randomElement } from "./smallUtil.js";
 
 export default class Animal extends LivingCreature {
     constructor(x, y, color, requiredEnergy, maximalPower) {
@@ -86,7 +87,7 @@ export default class Animal extends LivingCreature {
     eat(eatColors, listArray) {
         let fields = [];
         this.updateneighbors();
-        for(color of eatColors) {
+        for(let color of eatColors) {
             fields.push(...this.findFields(color));
         };
         if (fields.length > 0) {

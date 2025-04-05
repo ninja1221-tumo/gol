@@ -1,3 +1,4 @@
+import Grass from "./gameoflife/GrassClass.js";
 import Grasseater from "./gameoflife/GrasseaterClass.js";
 import Flesheater from "./gameoflife/FlesheaterClass.js";
 import Horse from "./gameoflife/HorseClass.js";
@@ -7,7 +8,6 @@ import { matrix, getRandomMatrix, createmoreCreatures } from "./matrix.js";
 export let framerate = 25;
 
 export function setup() {
-    matrix = getRandomMatrix(40, 40);
     createmoreCreatures();
 
     for (let y = 0; y < matrix.length; y++) {
@@ -26,7 +26,7 @@ export function setup() {
                 Horse.staticList.push(h);
             } else if (matrix[y][x] == 5) {
                 let id = TrapStone.staticList.length;
-                let di = Math.floor(random(0, 5));
+                let di = Math.floor(Math.random(0, 5));
                 let s = new TrapStone(x, y, id, di);
                 TrapStone.staticList.push(s);
             }

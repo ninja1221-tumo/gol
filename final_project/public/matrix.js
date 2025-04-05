@@ -1,7 +1,8 @@
-export let matrix = [];
-let anzahlGenerierterKreaturen = 5;
+export let matrix = getRandomMatrix(40, 40);
 
 export function getRandomMatrix(hoehe, breite) {
+    let anzahlGenerierterKreaturen = 5;
+    
     let square = [];
     for (let y = 0; y < breite; y++) {
         square[y] = [];  // or square.push([])
