@@ -23,5 +23,13 @@ socket.on('matrix', (matrix) => {
     }
 });
 
+socket.on('inforesponse', (res)=>{
+    console.log(res);
+});
+
+function requestInformation(){
+    socket.emit('info', 'grass');
+}
+
 // wir können hier auch auf andere Ereignisse reagieren, die der Server sendet
 // socket.on('someEvent', (data) => {

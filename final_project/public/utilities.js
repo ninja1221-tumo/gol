@@ -3,11 +3,12 @@ import Grasseater from "./gameoflife/GrasseaterClass.js";
 import Flesheater from "./gameoflife/FlesheaterClass.js";
 import Horse from "./gameoflife/HorseClass.js";
 import TrapStone from "./gameoflife/TrapStoneClass.js";
-import { matrix, getRandomMatrix, createmoreCreatures } from "./matrix.js";
+import { matrix, createmoreCreatures, colorCodes, restartMatrix } from "./matrix.js";
 
-export let framerate = 25;
+export let framerate = 1000;
 
 export function setup() {
+    restartMatrix();
     createmoreCreatures();
 
     for (let y = 0; y < matrix.length; y++) {
@@ -26,12 +27,20 @@ export function setup() {
                 Horse.staticList.push(h);
             } else if (matrix[y][x] == 5) {
                 let id = TrapStone.staticList.length;
-                let di = Math.floor(Math.random(0, 5));
+                let di = Math.floor(Math.random()*5);
                 let s = new TrapStone(x, y, id, di);
                 TrapStone.staticList.push(s);
             }
         }
     }
+};
+
+export const colorClassCreature = {
+    1: Grass,
+    2: Grasseater,
+    3: Flesheater,
+    4: Horse,
+    5: TrapStone
 };
 
 export function draw() {
@@ -52,12 +61,12 @@ export function draw() {
     }
 };
 
-export function transformMatrix(matrix) {
+export function transformMatrix(matrixO) {
     let patterns = [];
-    for(let i = 0; i < matrix.length; i++){
+    for(let i = 0; i < matrixO.length; i++){
         patterns.push([]);
-        for(let j = 0; j < matrix[i].length; j++){
-            patterns[i][j] = matrix[i][j];
+        for(let j = 0; j < matrixO[i].length; j++){
+            patterns[i][j] = colorCodes[matrixO[i][j]];
         }
     };
     return patterns;
