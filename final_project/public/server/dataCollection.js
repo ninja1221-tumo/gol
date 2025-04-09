@@ -10,7 +10,7 @@ export let currentFileName = Date.now().toString().replace(" ", "").replace(".",
 
 export class DataStamp {
     static fullTimeLine = {}
-    constructor(index)
+    constructor(index = undefined)
     {
         this.data = {};
         for(let creatureId in Object.keys(colorClassCreature))
@@ -18,7 +18,7 @@ export class DataStamp {
             // Place all creatures into the JSON in format: "<CreatureName>Amount": number
             this.data[`${creatureNames.at(Number(creatureId))}Amount`] = creatureClasses[Number(creatureId)].staticList.length;
         };
-        DataStamp.fullTimeLine[index] = this;
+        if(index != undefined) DataStamp.fullTimeLine[index] = this;
     };
 }
 

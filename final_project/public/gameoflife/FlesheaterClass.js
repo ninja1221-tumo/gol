@@ -1,5 +1,6 @@
 import Animal from "./AnimalClass.js";
 import Grasseater from "./GrasseaterClass.js";
+import Horse from "./HorseClass.js";
 
 export default class Flesheater extends Animal{
     static staticList = [];
@@ -13,7 +14,7 @@ export default class Flesheater extends Animal{
         super.die(Flesheater);
     }
     eat() {
-        super.eat([2], [Grasseater]);
+        super.eat([2, 4], [Grasseater, Horse]);
     }
 
 }

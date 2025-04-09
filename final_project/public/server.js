@@ -40,9 +40,9 @@ io.on('connection', (socket) => {
         clearInterval(intetval);
     });
 
-    // socket.on('info', (req, res)=>{
-    //     socket.emit('inforesponse', [Grass.staticList, Grasseater.staticList, Flesheater.staticList, Horse.staticList, TrapStone.staticList]);
-    // });
+    socket.on('info', (req, res)=>{
+        socket.emit('inforesponse', [new DataStamp]);
+    });
 
     setup();
     updateFileName();
