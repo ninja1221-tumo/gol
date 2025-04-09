@@ -1,5 +1,5 @@
-import Grasseater from "./GrasseaterClass.js";
 import Animal from "./AnimalClass.js";
+import Grasseater from "./GrasseaterClass.js";
 
 export default class Flesheater extends Animal{
     static staticList = [];

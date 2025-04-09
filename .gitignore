@@ -9,3 +9,6 @@
 
 # env-Dateien ignorieren
 .env
+
+# ordner mit gesammelten daten
+/final_project/public/data/*

@@ -9,7 +9,6 @@ export function getRandomMatrix(hoehe, breite) {
             square[y][x] = Math.floor(Math.random() * anzahlGenerierterKreaturen);
         }
     }
-    console.log(square);
     return square
 }
 

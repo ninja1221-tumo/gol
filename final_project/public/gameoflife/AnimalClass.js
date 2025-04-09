@@ -106,11 +106,8 @@ export default class Animal extends LivingCreature {
                 for (let i = 0; i < listArray[j].staticList.length; i++) {
                     if (this.y == listArray[j].staticList[i].y && this.x == listArray[j].staticList[i].x) {
                         listArray[j].staticList.splice(i, 1);
-                        deleted = true;
-                        break;
                     }
                 }
-                if(deleted) break;
             }
             this.eatCounter++;
             this.notEatenCounter = 0;

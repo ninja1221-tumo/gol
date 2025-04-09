@@ -13,7 +13,7 @@ export default class Grasseater extends Animal {
         super.die(Grasseater);
     }
     eat() {
-        super.eat([1],[Grass]);
+        super.eat([1], [Grass]);
     }
 
 }

@@ -8,11 +8,7 @@ const app = express();
 import * as http from "http";
 const server = http.Server(app);
 import * as socketio from "socket.io";
-import Grass from "./gameoflife/GrassClass.js";
-import Grasseater from "./gameoflife/GrasseaterClass.js";
-import Flesheater from "./gameoflife/FlesheaterClass.js";
-import Horse from "./gameoflife/HorseClass.js";
-import TrapStone from "./gameoflife/TrapStoneClass.js";
+import { currentFileName, DataStamp, saveToFile, updateFileName } from "./server/dataCollection.js";
 const io = new socketio.Server(server);
 
 // wir speichern das Ergebnis von der setInterval Funktion in einer Variable,
@@ -44,13 +40,25 @@ io.on('connection', (socket) => {
         clearInterval(intetval);
     });
 
-    socket.on('info', (req, res)=>{
-        socket.emit('inforesponse', [Grass.staticList, Grasseater.staticList, Flesheater.staticList, Horse.staticList, TrapStone.staticList]);
-    });
+    // socket.on('info', (req, res)=>{
+    //     socket.emit('inforesponse', [Grass.staticList, Grasseater.staticList, Flesheater.staticList, Horse.staticList, TrapStone.staticList]);
+    // });
 
     setup();
+    updateFileName();
+
+    // Jedes wievielte frame wird gespeichert
+    const frameInterval = 30;
+
+    let frame = 0;
     intetval = setInterval(() => {
         draw();
+        if(frame % frameInterval == 0){
+            console.log(frame);
+            new DataStamp(frame);
+            saveToFile(currentFileName);
+        };
+        frame++;
         socket.emit('matrix', transformMatrix(matrix));
     }, framerate);
 });

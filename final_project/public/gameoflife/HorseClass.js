@@ -1,8 +1,8 @@
 import Animal from "./AnimalClass.js";
 import { matrix } from "../matrix.js";
-import Grass from "./GrassClass.js";
 import { randomElement } from "./smallUtil.js";
 import Grasseater from "./GrasseaterClass.js";
+import Grass from "./GrassClass.js";
 
 export default class Horse extends Animal{
     static staticList = [];
