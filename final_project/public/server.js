@@ -8,7 +8,7 @@ const app = express();
 import * as http from "http";
 const server = http.Server(app);
 import * as socketio from "socket.io";
-import { currentFileName, DataStamp, saveToFile, updateFileName } from "./server/dataCollection.js";
+import { currentFileName, DataStamp, frameInterval, saveToFile, updateFileName } from "./server/dataCollection.js";
 import { steinBruchSteinePlatzieren } from "./matrix/events.js";
 const io = new socketio.Server(server);
 
@@ -47,9 +47,6 @@ io.on('connection', (socket) => {
 
     setup();
     updateFileName();
-
-    // Jedes wievielte frame wird gespeichert
-    const frameInterval = 30;
 
     let frame = 0;
     intetval = setInterval(() => {

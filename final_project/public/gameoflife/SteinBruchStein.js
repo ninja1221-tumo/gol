@@ -1,5 +1,6 @@
 import { matrix } from "../matrix/matrix.js";
 import { colorClassCreature } from "../matrix/utilities.js";
+import UeberrestClass from "./UeberresteClass.js";
 
 
 // rollt nur auf der xAchse von 0 bis 40
@@ -21,6 +22,21 @@ export default class SteinBruchStein {
             // neue Aktuelle position aktualisieren
             this.x += 1;
         } else {
+            // reste hinterlassen
+            matrix[this.y][this.x] = 7;
+            let place = true;
+            for(let i = 0; i < UeberrestClass.staticList.length; i++){
+                if(UeberrestClass.staticList[i].y == this.y && UeberrestClass.staticList[i].x == this.x)
+                    {   
+                        place = false;
+                        break;
+                    } 
+            };
+            if(place){
+                let rest = new UeberrestClass(this.x, this.y);
+                UeberrestClass.staticList.push(rest);
+            }
+            // zum löschen markieren
             deleteThis = true;
         };
         if(rolledColor != 0)

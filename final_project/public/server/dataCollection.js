@@ -8,6 +8,9 @@ export const dataSafeDirectory = "./data/";
 // Dateiname ist datum formatiert .json
 export let currentFileName = Date.now().toString().replace(" ", "").replace(".", "-").concat(".json");
 
+// Jedes wievielte frame wird gespeichert
+export const frameInterval = 15;
+
 export class DataStamp {
     static fullTimeLine = {}
     constructor(index = undefined)
@@ -28,7 +31,7 @@ export function saveToFile(fileName){
         fs.writeFileSync(dataSafeDirectory+fileName, "");
     };
     fs.writeFileSync(dataSafeDirectory+fileName, JSON.stringify(DataStamp.fullTimeLine));
-    console.log("Saved last 60 frames to file. Path: " + dataSafeDirectory+fileName);
+    console.log("Saved last "+ frameInterval +" frames to file. Path: " + dataSafeDirectory+fileName);
 };
 
 export function updateFileName() {
