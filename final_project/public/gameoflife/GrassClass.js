@@ -1,5 +1,5 @@
 import { randomElement } from "./smallUtil.js";
-import { matrix } from "../matrix.js";
+import { matrix } from "../matrix/matrix.js";
 
 export default class Grass {
     static staticList = [];

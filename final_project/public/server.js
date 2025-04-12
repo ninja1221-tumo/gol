@@ -1,14 +1,15 @@
 // import von der setup und draw Funktion und der matrix Variable
 // ...
 
-import { draw, framerate, setup, transformMatrix } from "./utilities.js";
-import { matrix } from "./matrix.js";
+import { activeEvents, draw, eventTimes, framerate, setup, transformMatrix } from "./matrix/utilities.js";
+import { matrix } from "./matrix/matrix.js";
 import express from "express";
 const app = express();
 import * as http from "http";
 const server = http.Server(app);
 import * as socketio from "socket.io";
 import { currentFileName, DataStamp, saveToFile, updateFileName } from "./server/dataCollection.js";
+import { steinBruchSteinePlatzieren } from "./matrix/events.js";
 const io = new socketio.Server(server);
 
 // wir speichern das Ergebnis von der setInterval Funktion in einer Variable,
@@ -61,4 +62,15 @@ io.on('connection', (socket) => {
         frame++;
         socket.emit('matrix', transformMatrix(matrix));
     }, framerate);
+
+    // Ereignisse
+    socket.on('event', (req, res)=>{
+        if(req == "steinbruch")
+        {
+            activeEvents.push(steinBruchSteinePlatzieren);
+            eventTimes.push(3+Math.floor(Math.random()*6));
+            console.log("Steinbruch für " + eventTimes.at(-1));
+        }
+    })
+
 });

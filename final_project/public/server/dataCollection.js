@@ -1,6 +1,6 @@
 import * as fs from "fs"
 import { creatureClasses, creatureNames } from "./dataStorages.js"
-import { colorClassCreature } from "../utilities.js";
+import { colorClassCreature } from "../matrix/utilities.js";
 
 // Pfad relativ zu skript-eingang
 // Pfad zum Speichern der Daten-Dateien (JSON)

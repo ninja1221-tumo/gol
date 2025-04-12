@@ -1,6 +1,7 @@
 
 
 
+
 // Socket.io: Verbindung zum Server herstellen
 // Die socket Variable enthält eine Verbindung zum Server.
 const socket = io();
@@ -29,6 +30,12 @@ socket.on('inforesponse', (res)=>{
 
 function requestInformation(){
     socket.emit('info', 'grass');
+}
+
+
+// Ereignis Steinbruch beim clicken ausführen
+function eventSteinbruch(){
+    socket.emit('event', "steinbruch");
 }
 
 // wir können hier auch auf andere Ereignisse reagieren, die der Server sendet

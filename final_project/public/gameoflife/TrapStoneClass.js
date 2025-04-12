@@ -1,5 +1,5 @@
-import { matrix } from "../matrix.js";
-import { colorClassCreature } from "../utilities.js";
+import { matrix } from "../matrix/matrix.js";
+import { colorClassCreature } from "../matrix/utilities.js";
 
 export default class TrapStone {
     static staticList = [];
@@ -69,6 +69,9 @@ export default class TrapStone {
                     return
                 }
             }
+        }else if(rolledColor == 6){ // Delete itself if crash with SteinBruch
+            TrapStone.staticList.splice(TrapStone.staticList.findIndex((element) => element == this), 1);
+            console.log("TrapStone rolled to Steinbruch and broke!");
         }
     }
 }

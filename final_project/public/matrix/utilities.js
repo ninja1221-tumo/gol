@@ -1,11 +1,15 @@
-import Grass from "./gameoflife/GrassClass.js";
-import Grasseater from "./gameoflife/GrasseaterClass.js";
-import Flesheater from "./gameoflife/FlesheaterClass.js";
-import Horse from "./gameoflife/HorseClass.js";
-import TrapStone from "./gameoflife/TrapStoneClass.js";
+import Grass from "../gameoflife/GrassClass.js";
+import Grasseater from "../gameoflife/GrasseaterClass.js";
+import Flesheater from "../gameoflife/FlesheaterClass.js";
+import Horse from "../gameoflife/HorseClass.js";
+import TrapStone from "../gameoflife/TrapStoneClass.js";
 import { matrix, createmoreCreatures, colorCodes, restartMatrix } from "./matrix.js";
+import SteinBruchStein from "../gameoflife/SteinBruchStein.js";
 
 export let framerate = 1000;
+
+export let activeEvents = [];
+export let eventTimes = [];
 
 export function setup() {
     restartMatrix();
@@ -40,7 +44,8 @@ export const colorClassCreature = {
     2: Grasseater,
     3: Flesheater,
     4: Horse,
-    5: TrapStone
+    5: TrapStone,
+    6: SteinBruchStein
 };
 
 export function draw() {
@@ -58,6 +63,22 @@ export function draw() {
     }
     for (let i = 0; i < TrapStone.staticList.length; i++) {
         TrapStone.staticList[i].roll();
+    }
+    for(let i = 0; i < SteinBruchStein.staticList.length; i++) {
+        SteinBruchStein.staticList[i].roll();
+    };
+
+    // Events ausführen
+    for(let e = 0; e < eventTimes.length; e++){
+        if(eventTimes[e] <= 0) {
+            activeEvents.splice(e, 1);
+            eventTimes.splice(e, 1);
+        }else {
+            // Eventfunktion ausführen
+            activeEvents[e]();
+            // Event timer kürzen
+            eventTimes[e] -= 1;
+        }
     }
 };
 

@@ -1,5 +1,5 @@
 import Animal from "./AnimalClass.js";
-import { matrix } from "../matrix.js";
+import { matrix } from "../matrix/matrix.js";
 import { randomElement } from "./smallUtil.js";
 import Grasseater from "./GrasseaterClass.js";
 import Grass from "./GrassClass.js";

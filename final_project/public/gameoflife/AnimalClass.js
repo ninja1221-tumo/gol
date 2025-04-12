@@ -1,5 +1,5 @@
 import LivingCreature from "./LivingCreatureClass.js";
-import { matrix } from "../matrix.js";
+import { matrix } from "../matrix/matrix.js";
 import { randomElement } from "./smallUtil.js";
 
 export default class Animal extends LivingCreature {

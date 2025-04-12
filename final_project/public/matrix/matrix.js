@@ -20,7 +20,8 @@ export const colorCodes = {
     2: "yellow",
     3: "red",
     4: "orange",
-    5: "DarkGrey"
+    5: "DarkGrey",
+    6: "DimGray"
 }
 
 export function restartMatrix(){
